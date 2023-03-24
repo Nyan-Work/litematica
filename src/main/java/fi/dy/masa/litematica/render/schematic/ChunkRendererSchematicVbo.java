@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.class_8251;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
@@ -750,9 +751,9 @@ public class ChunkRendererSchematicVbo
 
     private void postRenderBlocks(RenderLayer layer, float x, float y, float z, BufferBuilder buffer, ChunkRenderDataSchematic chunkRenderData)
     {
-        if (layer == RenderLayer.getTranslucent() && chunkRenderData.isBlockLayerEmpty(layer) == false)
+        if (layer == RenderLayer.getTranslucent() && !chunkRenderData.isBlockLayerEmpty(layer))
         {
-            buffer.sortFrom(x, y, z);
+            buffer.method_49904(class_8251.method_49906(x, y, z));
             chunkRenderData.setBlockBufferState(layer, buffer.getSortingData());
         }
 
@@ -777,9 +778,9 @@ public class ChunkRendererSchematicVbo
     private void postRenderOverlay(OverlayRenderType type, float x, float y, float z, BufferBuilder buffer, ChunkRenderDataSchematic chunkRenderData)
     {
         RenderSystem.applyModelViewMatrix();
-        if (type == OverlayRenderType.QUAD && chunkRenderData.isOverlayTypeEmpty(type) == false)
+        if (type == OverlayRenderType.QUAD && !chunkRenderData.isOverlayTypeEmpty(type))
         {
-            buffer.sortFrom(x, y, z);
+            buffer.method_49904(class_8251.method_49906(x, y, z));
             chunkRenderData.setOverlayBufferState(type, buffer.getSortingData());
         }
 
