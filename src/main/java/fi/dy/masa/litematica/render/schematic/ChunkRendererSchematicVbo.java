@@ -13,11 +13,11 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import com.mojang.blaze3d.systems.VertexSorter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.class_8251;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.BufferBuilder;
@@ -753,7 +753,7 @@ public class ChunkRendererSchematicVbo
     {
         if (layer == RenderLayer.getTranslucent() && !chunkRenderData.isBlockLayerEmpty(layer))
         {
-            buffer.method_49904(class_8251.method_49906(x, y, z));
+            buffer.setSorter(VertexSorter.byDistance(x, y, z));
             chunkRenderData.setBlockBufferState(layer, buffer.getSortingData());
         }
 
@@ -780,7 +780,7 @@ public class ChunkRendererSchematicVbo
         RenderSystem.applyModelViewMatrix();
         if (type == OverlayRenderType.QUAD && !chunkRenderData.isOverlayTypeEmpty(type))
         {
-            buffer.method_49904(class_8251.method_49906(x, y, z));
+            buffer.setSorter(VertexSorter.byDistance(x, y, z));
             chunkRenderData.setOverlayBufferState(type, buffer.getSortingData());
         }
 
