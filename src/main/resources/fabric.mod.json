@@ -34,7 +34,7 @@
 	],
 
 	"depends": {
-		"minecraft": "1.20-alpha.23.13.a",
+		"minecraft": "1.20-alpha.23.13.ab",
 		"malilib": "0.16.x"
 	}
 }
