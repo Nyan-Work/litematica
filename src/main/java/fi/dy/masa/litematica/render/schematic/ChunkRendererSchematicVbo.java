@@ -665,11 +665,11 @@ public class ChunkRendererSchematicVbo
 
             if (schematicHasAir)
             {
-                return (clientHasAir || (this.ignoreClientWorldFluids && stateClient.getMaterial().isLiquid())) ? OverlayType.NONE : OverlayType.EXTRA;
+                return (clientHasAir || (this.ignoreClientWorldFluids && stateClient.method_51176())) ? OverlayType.NONE : OverlayType.EXTRA;
             }
             else
             {
-                if (clientHasAir || (this.ignoreClientWorldFluids && stateClient.getMaterial().isLiquid()))
+                if (clientHasAir || (this.ignoreClientWorldFluids && stateClient.method_51176()))
                 {
                     return OverlayType.MISSING;
                 }

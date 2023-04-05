@@ -207,8 +207,8 @@ public class SchematicPlacingUtils
 
                     BlockState stateOld = world.getBlockState(pos);
 
-                    if ((replace == ReplaceBehavior.NONE && stateOld.getMaterial() != Material.AIR) ||
-                        (replace == ReplaceBehavior.WITH_NON_AIR && state.getMaterial() == Material.AIR))
+                    if ((replace == ReplaceBehavior.NONE && !stateOld.isAir()) ||
+                        (replace == ReplaceBehavior.WITH_NON_AIR && stateOld.isAir()))
                     {
                         continue;
                     }
