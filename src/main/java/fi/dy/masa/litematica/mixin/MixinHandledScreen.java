@@ -1,5 +1,6 @@
 package fi.dy.masa.litematica.mixin;
 
+import net.minecraft.client.gui.DrawContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,8 +20,8 @@ public abstract class MixinHandledScreen extends Screen
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", shift = At.Shift.AFTER,
-            target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawBackground(Lnet/minecraft/client/util/math/MatrixStack;FII)V"))
-    private void renderSlotHighlights(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci)
+            target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V"))
+    private void renderSlotHighlights(DrawContext drawContext, int mouseX, int mouseY, float delta, CallbackInfo ci)
     {
         MaterialListHudRenderer.renderLookedAtBlockInInventory((HandledScreen<?>) (Object) this, this.client);
     }

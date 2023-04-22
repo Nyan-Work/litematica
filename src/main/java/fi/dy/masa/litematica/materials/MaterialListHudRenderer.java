@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -72,13 +73,12 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
     }
 
     @Override
-    public int render(int xOffset, int yOffset, HudAlignment alignment, MatrixStack matrixStack)
+    public int render(int xOffset, int yOffset, HudAlignment alignment, DrawContext drawContext)
     {
         MinecraftClient mc = MinecraftClient.getInstance();
         long currentTime = System.currentTimeMillis();
         List<MaterialListEntry> list;
-        MatrixStack textStack = matrixStack;
-        matrixStack = RenderSystem.getModelViewStack();
+        MatrixStack textStack = drawContext.getMatrices();
 
         if (currentTime - this.lastUpdateTime > 2000)
         {
@@ -154,8 +154,8 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
         if (scale != 1d)
         {
-            matrixStack.push();
-            matrixStack.scale((float) scale, (float) scale, (float) scale);
+            drawContext.getMatrices().push();
+            drawContext.getMatrices().scale((float) scale, (float) scale, (float) scale);
 
             textStack.push();
             textStack.scale((float) scale, (float) scale, (float) scale);
@@ -176,13 +176,13 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
         for (int i = 0; i < size; ++i)
         {
-            mc.getItemRenderer().renderInGui(matrixStack, list.get(i).getStack(), x, y);
+            drawContext.drawItem(list.get(i).getStack(), x, y);
             y += lineHeight;
         }
 
         if (scale != 1d)
         {
-            matrixStack.pop();
+            drawContext.getMatrices().pop();
             RenderSystem.applyModelViewMatrix();
         }
 
@@ -190,11 +190,11 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
         if (useShadow)
         {
-            font.drawWithShadow(textStack, title, posX + 2, posY + 2, textColor);
+            drawContext.drawTextWithShadow(font, title, posX + 2, posY + 2, textColor);
         }
         else
         {
-            font.draw(textStack, title, posX + 2, posY + 2, textColor);
+            drawContext.drawText(font, title, posX + 2, posY + 2, textColor, false);
         }
 
         final int itemCountTextColor = Configs.Colors.MATERIAL_LIST_HUD_ITEM_COUNTS.getIntegerValue();
@@ -214,13 +214,13 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
             if (useShadow)
             {
-                font.drawWithShadow(textStack, text, x, y, textColor);
-                font.drawWithShadow(textStack, strCount, cntPosX, y, itemCountTextColor);
+                drawContext.drawTextWithShadow(font, text, x, y, textColor);
+                drawContext.drawTextWithShadow(font, strCount, cntPosX, y, itemCountTextColor);
             }
             else
             {
-                font.draw(textStack, text, x, y, textColor);
-                font.draw(textStack, strCount, cntPosX, y, itemCountTextColor);
+                drawContext.drawText(font, text, x, y, textColor, false);
+                drawContext.drawText(font, strCount, cntPosX, y, itemCountTextColor, false);
             }
 
             y += lineHeight;

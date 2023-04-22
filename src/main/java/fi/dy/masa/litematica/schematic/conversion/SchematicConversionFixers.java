@@ -316,7 +316,7 @@ public class SchematicConversionFixers
             state = state
                         .with(NoteBlock.POWERED, tag.getBoolean("powered"))
                         .with(NoteBlock.NOTE, MathHelper.clamp(tag.getByte("note"), 0, 24))
-                        .with(NoteBlock.INSTRUMENT, Instrument.fromBelowState(reader.getBlockState(pos.down())));
+                        .with(NoteBlock.INSTRUMENT, reader.getBlockState(pos.down()).getInstrument());
         }
 
         return state;
