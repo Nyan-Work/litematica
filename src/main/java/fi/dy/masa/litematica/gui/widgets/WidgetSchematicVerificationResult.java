@@ -4,7 +4,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
-import org.apache.logging.log4j.core.appender.rolling.action.IfAll;
 import org.joml.Quaternionf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -320,12 +319,12 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
             if (useBlockModelExpected)
             {
                 model = this.blockModelShapes.getModel(this.mismatchInfo.stateExpected);
-                renderModelInGui(x1, y, 1, model, this.mismatchInfo.stateExpected, drawContext, this.mc);
+                renderModelInGui(x1, y, 1, model, this.mismatchInfo.stateExpected, drawContext.getMatrices(), this.mc);
             }
             else
             {
                 drawContext.drawItem(this.mismatchInfo.stackExpected, x1, y);
-                drawContext.drawItemInSlot(this.textRenderer, this.mismatchInfo.stackExpected, x1, y);
+                drawContext.drawItemInSlot(this.textRenderer, this.mismatchInfo.stackExpected, x1, y, null);
             }
 
             if (this.mismatchEntry.mismatchType != MismatchType.CORRECT_STATE)
@@ -335,12 +334,12 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
                 if (useBlockModelFound)
                 {
                     model = this.blockModelShapes.getModel(this.mismatchInfo.stateFound);
-                    renderModelInGui(x2, y, 1, model, this.mismatchInfo.stateFound, drawContext, this.mc);
+                    renderModelInGui(x2, y, 1, model, this.mismatchInfo.stateFound, drawContext.getMatrices(), this.mc);
                 }
                 else
                 {
                     drawContext.drawItem(this.mismatchInfo.stackFound, x2, y);
-                    drawContext.drawItemInSlot(this.textRenderer, this.mismatchInfo.stackFound, x2, y);
+                    drawContext.drawItemInSlot(this.textRenderer, this.mismatchInfo.stackFound, x2, y, null);
                 }
             }
 
@@ -354,10 +353,12 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
     @Override
     public void postRenderHovered(int mouseX, int mouseY, boolean selected, DrawContext drawContext)
     {
+        MatrixStack matrixStack = drawContext.getMatrices();
+
         if (this.mismatchInfo != null && this.buttonIgnore != null && mouseX < this.buttonIgnore.getX())
         {
-            drawContext.getMatrices().push();
-            drawContext.getMatrices().translate(0, 0, 200);
+            matrixStack.push();
+            matrixStack.translate(0, 0, 200);
 
             int x = mouseX + 10;
             int y = mouseY;
@@ -376,7 +377,7 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
 
             this.mismatchInfo.render(x, y, this.mc, drawContext);
 
-            drawContext.getMatrices().pop();
+            matrixStack.pop();
         }
     }
 
@@ -448,9 +449,11 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
 
         public void render(int x, int y, MinecraftClient mc, DrawContext drawContext)
         {
+            MatrixStack matrixStack = drawContext.getMatrices();
+
             if (this.stateExpected != null && this.stateFound != null)
             {
-                drawContext.getMatrices().push();
+                matrixStack.push();
 
                 RenderUtils.drawOutlinedBox(x, y, this.totalWidth, this.totalHeight, 0xFF000000, GuiBase.COLOR_HORIZONTAL_BAR);
 
@@ -462,6 +465,7 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
                 String pre = GuiBase.TXT_WHITE + GuiBase.TXT_BOLD;
                 String strExpected = pre + StringUtils.translate("litematica.gui.label.schematic_verifier.expected") + GuiBase.TXT_RST;
                 String strFound =    pre + StringUtils.translate("litematica.gui.label.schematic_verifier.found") + GuiBase.TXT_RST;
+
                 drawContext.drawText(textRenderer, strExpected, x1, y, 0xFFFFFFFF, false);
                 drawContext.drawText(textRenderer, strFound,    x2, y, 0xFFFFFFFF, false);
 
@@ -485,12 +489,12 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
                 //RenderSystem.disableBlend();
                 //RenderUtils.disableDiffuseLighting();
 
-                drawContext.drawText(textRenderer, this.nameExpected, x1 + 20, y + 4, 0xFFFFFFFF, false);
-                drawContext.drawText(textRenderer, this.nameFound, x2 + 20, y + 4, 0xFFFFFFFF, false);
+                drawContext.drawText(textRenderer, this.nameExpected, x1 + 20, y + 4, 0xFFFFFFFF,false);
+                drawContext.drawText(textRenderer, this.nameFound,    x2 + 20, y + 4, 0xFFFFFFFF,false);
 
                 y += 20;
-                drawContext.drawText(textRenderer, this.blockRegistrynameExpected, x1, y, 0xFF4060FF, false);
-                drawContext.drawText(textRenderer, this.blockRegistrynameFound, x1, y, 0xFF4060FF, false);
+                drawContext.drawText(textRenderer, this.blockRegistrynameExpected, x1, y, 0xFF4060FF,false);
+                drawContext.drawText(textRenderer, this.blockRegistrynameFound,    x2, y, 0xFF4060FF,false);
                 y += StringUtils.getFontHeight() + 4;
 
                 List<String> propsExpected = BlockUtils.getFormattedBlockStateProperties(this.stateExpected, " = ");
@@ -506,33 +510,35 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
                 if (useBlockModelExpected)
                 {
                     model = blockModelShapes.getModel(this.stateExpected);
-                    renderModelInGui(x1, iconY, 1, model, this.stateExpected, drawContext, mc);
+                    renderModelInGui(x1, iconY, 1, model, this.stateExpected, matrixStack, mc);
                 }
                 else
                 {
                     drawContext.drawItem(this.stackExpected, x1, iconY);
-                    drawContext.drawItemInSlot(textRenderer, this.stackExpected, x1, iconY);
+                    drawContext.drawItemInSlot(textRenderer, this.stackExpected, x1, iconY, null);
                 }
 
                 if (useBlockModelFound)
                 {
                     model = blockModelShapes.getModel(this.stateFound);
-                    renderModelInGui(x2, iconY, 1, model, this.stateFound, drawContext, mc);
+                    renderModelInGui(x2, iconY, 1, model, this.stateFound, matrixStack, mc);
                 }
                 else
                 {
                     drawContext.drawItem(this.stackFound, x2, iconY);
-                    drawContext.drawItemInSlot(textRenderer, this.stackFound, x2, iconY);
+                    drawContext.drawItemInSlot(textRenderer, this.stackFound, x2, iconY, null);
                 }
 
-                drawContext.getMatrices().pop();
+                //mc.getRenderItem().zLevel -= 100;
+
+                matrixStack.pop();
             }
         }
     }
 
     public static void renderModelInGui(int x, int y, float z,
                                         BakedModel model, BlockState state,
-                                        DrawContext drawContext, MinecraftClient mc)
+                                        MatrixStack matrixStack, MinecraftClient mc)
     {
         if (state.getBlock() == Blocks.AIR)
         {
@@ -545,18 +551,20 @@ public class WidgetSchematicVerificationResult extends WidgetListEntrySortable<B
         RenderUtils.setupBlend();
         RenderUtils.color(1f, 1f, 1f, 1f);
 
-        drawContext.getMatrices().push();
-        drawContext.getMatrices().translate(x + 8.0, y + 8.0, z + 100.0);
-        drawContext.getMatrices().scale(16, -16, 16);
+        matrixStack.push();
+        matrixStack.translate(x + 8.0, y + 8.0, z + 100.0);
+        matrixStack.scale(16, -16, 16);
 
         Quaternionf rot = new Quaternionf().rotationXYZ(30 * (float) (Math.PI / 180.0), 225 * (float) (Math.PI / 180.0), 0.0F);
-        drawContext.getMatrices().multiply(rot);
-        drawContext.getMatrices().scale(0.625f, 0.625f, 0.625f);
-        drawContext.getMatrices().translate(-0.5, -0.5, -0.5);
+        matrixStack.multiply(rot);
+        //matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(30));
+        //matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(225));
+        matrixStack.scale(0.625f, 0.625f, 0.625f);
+        matrixStack.translate(-0.5, -0.5, -0.5);
 
-        renderModel(model, state, drawContext.getMatrices());
+        renderModel(model, state, matrixStack);
 
-        drawContext.getMatrices().pop();
+        matrixStack.pop();
     }
 
     private static void renderModel(BakedModel model, BlockState state, MatrixStack matrixStack)

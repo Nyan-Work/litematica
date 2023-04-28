@@ -16,6 +16,7 @@ import net.minecraft.world.biome.ColorResolver;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkProvider;
 import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.chunk.light.LightSourceView;
 import net.minecraft.world.chunk.light.LightingProvider;
 import fi.dy.masa.litematica.world.FakeLightingProvider;
 
@@ -69,8 +70,7 @@ public class ChunkCacheSchematic implements BlockRenderView, ChunkProvider
     }
 
     @Override
-    @org.jetbrains.annotations.Nullable
-    public BlockView getChunk(int chunkX, int chunkZ)
+    public LightSourceView getChunk(int chunkX, int chunkZ)
     {
         return null; // TODO 1.17 this shouldn't be needed since the lighting provider does nothing
     }

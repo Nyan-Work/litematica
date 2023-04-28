@@ -54,19 +54,13 @@ public class FakeLightingProvider extends LightingProvider
         }
 
         @Override
-        public void addLightSource(BlockPos pos, int i)
-        {
-        }
-
-        @Override
         public boolean hasUpdates()
         {
             return false;
         }
 
         @Override
-        public int doLightUpdates(int i, boolean bl, boolean bl2)
-        {
+        public int doLightUpdates() {
             return 0;
         }
 
@@ -79,6 +73,10 @@ public class FakeLightingProvider extends LightingProvider
         @Override
         public void setColumnEnabled(ChunkPos chunkPos, boolean bl)
         {
+        }
+
+        @Override
+        public void propagateLight(ChunkPos chunkPos) {
         }
     }
 }

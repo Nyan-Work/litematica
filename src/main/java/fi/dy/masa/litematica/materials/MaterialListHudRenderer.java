@@ -78,7 +78,7 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
         MinecraftClient mc = MinecraftClient.getInstance();
         long currentTime = System.currentTimeMillis();
         List<MaterialListEntry> list;
-        MatrixStack textStack = drawContext.getMatrices();
+        MatrixStack matrixStack = drawContext.getMatrices();
 
         if (currentTime - this.lastUpdateTime > 2000)
         {
@@ -154,11 +154,11 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
         if (scale != 1d)
         {
-            drawContext.getMatrices().push();
-            drawContext.getMatrices().scale((float) scale, (float) scale, (float) scale);
+            matrixStack.push();
+            matrixStack.scale((float) scale, (float) scale, (float) scale);
 
-            textStack.push();
-            textStack.scale((float) scale, (float) scale, (float) scale);
+            matrixStack.push();
+            matrixStack.scale((float) scale, (float) scale, (float) scale);
 
             RenderSystem.applyModelViewMatrix();
         }
@@ -182,7 +182,7 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
         if (scale != 1d)
         {
-            drawContext.getMatrices().pop();
+            matrixStack.pop();
             RenderSystem.applyModelViewMatrix();
         }
 
@@ -228,7 +228,7 @@ public class MaterialListHudRenderer implements IInfoHudRenderer
 
         if (scale != 1d)
         {
-            textStack.pop();
+            matrixStack.pop();
         }
 
         return contentHeight + 4;

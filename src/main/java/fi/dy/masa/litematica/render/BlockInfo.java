@@ -75,10 +75,13 @@ public class BlockInfo
 
             RenderUtils.enableDiffuseLightingGui3D();
 
+            //mc.getRenderItem().zLevel += 100;
             RenderUtils.drawRect(x1, y, 16, 16, 0x20FFFFFF); // light background for the item
             drawContext.drawItem(this.stack, x1, y);
-            drawContext.drawItemInSlot(textRenderer, this.stack, x1, y);
+            drawContext.drawItemInSlot(textRenderer, this.stack, x1, y, null);
+            //mc.getRenderItem().zLevel -= 100;
 
+            //RenderSystem.disableBlend();
             RenderUtils.disableDiffuseLighting();
 
             drawContext.drawText(textRenderer, this.stackName, x1 + 20, y + 4, 0xFFFFFFFF, false);

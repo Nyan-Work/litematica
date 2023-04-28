@@ -180,6 +180,8 @@ public class WidgetMaterialListEntry extends WidgetListEntrySortable<MaterialLis
     @Override
     public void render(int mouseX, int mouseY, boolean selected, DrawContext drawContext)
     {
+        MatrixStack matrixStack = drawContext.getMatrices();
+
         // Draw a lighter background for the hovered and the selected entry
         if (this.header1 == null && (selected || this.isMouseOver(mouseX, mouseY)))
         {
@@ -234,17 +236,20 @@ public class WidgetMaterialListEntry extends WidgetListEntrySortable<MaterialLis
             pre = countAvailable >= countMissing ? green : red;
             this.drawString(x4, y, color, pre + String.valueOf(countAvailable), drawContext);
 
-            drawContext.getMatrices().push();
+            matrixStack.push();
             //TODO: RenderSystem.disableLighting();
             RenderUtils.enableDiffuseLightingGui3D();
 
+            //mc.getRenderItem().zLevel -= 110;
             y = this.y + 3;
             RenderUtils.drawRect(x1, y, 16, 16, 0x20FFFFFF); // light background for the item
             drawContext.drawItem(this.entry.getStack(), x1, y);
+            //mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, this.entry.getStack(), x1, y, null);
+            //mc.getRenderItem().zLevel += 110;
 
             RenderSystem.disableBlend();
             RenderUtils.disableDiffuseLighting();
-            drawContext.getMatrices().pop();
+            matrixStack.pop();
 
             super.render(mouseX, mouseY, selected, drawContext);
         }
@@ -253,10 +258,12 @@ public class WidgetMaterialListEntry extends WidgetListEntrySortable<MaterialLis
     @Override
     public void postRenderHovered(int mouseX, int mouseY, boolean selected, DrawContext drawContext)
     {
+        MatrixStack matrixStack = drawContext.getMatrices();
+
         if (this.entry != null)
         {
-            drawContext.getMatrices().push();
-            drawContext.getMatrices().translate(0, 0, 200);
+            matrixStack.push();
+            matrixStack.translate(0, 0, 200);
 
             String header1 = GuiBase.TXT_BOLD + StringUtils.translate(HEADERS[0]);
             String header2 = GuiBase.TXT_BOLD + StringUtils.translate(HEADERS[1]);
@@ -306,10 +313,14 @@ public class WidgetMaterialListEntry extends WidgetListEntrySortable<MaterialLis
             //TODO: RenderSystem.disableLighting();
             RenderUtils.enableDiffuseLightingGui3D();
 
+            //mc.getRenderItem().zLevel += 100;
             drawContext.drawItem(stack, x2, y1);
+            //mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, stack, x1, y, null);
+            //mc.getRenderItem().zLevel -= 100;
+            //RenderSystem.disableBlend();
 
             RenderUtils.disableDiffuseLighting();
-            drawContext.getMatrices().pop();
+            matrixStack.pop();
         }
     }
 

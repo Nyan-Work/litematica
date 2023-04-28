@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -208,7 +207,7 @@ public class SchematicPlacingUtils
                     BlockState stateOld = world.getBlockState(pos);
 
                     if ((replace == ReplaceBehavior.NONE && !stateOld.isAir()) ||
-                        (replace == ReplaceBehavior.WITH_NON_AIR && stateOld.isAir()))
+                        (replace == ReplaceBehavior.WITH_NON_AIR && state.isAir()))
                     {
                         continue;
                     }

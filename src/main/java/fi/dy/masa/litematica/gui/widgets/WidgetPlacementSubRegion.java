@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import fi.dy.masa.litematica.gui.GuiSubRegionConfiguration;
