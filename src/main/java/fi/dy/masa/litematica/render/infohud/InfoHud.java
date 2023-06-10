@@ -6,7 +6,7 @@ import fi.dy.masa.litematica.config.Configs;
 import fi.dy.masa.malilib.config.HudAlignment;
 import fi.dy.masa.malilib.util.GuiUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 
 public class InfoHud
 {
@@ -58,7 +58,7 @@ public class InfoHud
         return Configs.InfoOverlays.INFO_HUD_OFFSET_Y.getIntegerValue();
     }
 
-    public void renderHud(MatrixStack matrixStack)
+    public void renderHud(DrawContext drawContext)
     {
         if (this.mc.player != null && this.shouldRender())
         {
@@ -76,7 +76,7 @@ public class InfoHud
 
             if (this.lineList.isEmpty() == false)
             {
-                int ySize = fi.dy.masa.malilib.render.RenderUtils.renderText(xOffset, yOffset, scale, 0xFFFFFFFF, 0x80000000, this.getHudAlignment(), true, true, this.lineList, matrixStack);
+                int ySize = fi.dy.masa.malilib.render.RenderUtils.renderText(xOffset, yOffset, scale, 0xFFFFFFFF, 0x80000000, this.getHudAlignment(), true, true, this.lineList, drawContext);
                 yOffset += (int) Math.ceil(ySize * scale);
             }
 
@@ -87,7 +87,7 @@ public class InfoHud
                     if (renderer.getShouldRenderCustom() && (isGui == false || renderer.shouldRenderInGuis()))
                     {
                         // FIXME: This is technically wrong, the yOffset should be separate per hud alignment
-                        yOffset += renderer.render(xOffset, yOffset, this.getHudAlignment(), matrixStack);
+                        yOffset += renderer.render(xOffset, yOffset, this.getHudAlignment(), drawContext);
                     }
                 }
             }

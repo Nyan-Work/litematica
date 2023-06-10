@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import javax.annotation.Nullable;
+
+import fi.dy.masa.litematica.mixin.IMixinEntity;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import net.minecraft.block.BlockState;
@@ -325,13 +327,13 @@ public class SchematicUtils
                 if (stack.getItem() instanceof BlockItem)
                 {
                     // Smuggle in a reference to the Schematic world to the use context
-                    World worldClient = mc.player.world;
-                    mc.player.world = worldSchematic;
+                    World worldClient = mc.player.getWorld();
+                    ((IMixinEntity) mc.player).litematica_setWorld(worldSchematic);
 
                     BlockHitResult hit = new BlockHitResult(trace.getPos(), side, pos.offset(side), false);
                     ItemPlacementContext ctx = new ItemPlacementContext(new ItemUsageContext(mc.player, Hand.MAIN_HAND, hit));
 
-                    mc.player.world = worldClient;
+                    ((IMixinEntity) mc.player).litematica_setWorld(worldClient);
 
                     stateNew = ((BlockItem) stack.getItem()).getBlock().getPlacementState(ctx);
                 }

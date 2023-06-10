@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import fi.dy.masa.litematica.gui.GuiSchematicVerifier;
 import fi.dy.masa.litematica.gui.GuiSchematicVerifier.BlockMismatchEntry;
@@ -37,9 +37,9 @@ public class WidgetListSchematicVerificationResults extends WidgetListBase<Block
     }
 
     @Override
-    public void drawContents(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void drawContents(DrawContext drawContext, int mouseX, int mouseY, float partialTicks)
     {
-        super.drawContents(matrixStack, mouseX, mouseY, partialTicks);
+        super.drawContents(drawContext, mouseX, mouseY, partialTicks);
         lastScrollbarPosition = this.scrollBar.getValue();
     }
 

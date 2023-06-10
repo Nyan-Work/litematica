@@ -1,5 +1,6 @@
 package fi.dy.masa.litematica.mixin;
 
+import net.minecraft.block.entity.SignText;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,8 +15,9 @@ import fi.dy.masa.litematica.util.WorldUtils;
 @Mixin(value = AbstractSignEditScreen.class, priority = 990)
 public class MixinAbstractSignEditScreen
 {
-    @Shadow @Final protected SignBlockEntity blockEntity;
-    @Shadow @Final protected String[] text;
+    @Shadow @Final private SignBlockEntity blockEntity;
+
+    @Shadow private SignText text;
 
     @Inject(method = "init", at = @At("HEAD"))
     private void insertSignText(CallbackInfo ci)

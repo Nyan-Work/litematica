@@ -54,7 +54,7 @@ public class FakeLightingProvider extends LightingProvider
         }
 
         @Override
-        public void addLightSource(BlockPos pos, int i)
+        public void propagateLight(ChunkPos chunkPos)
         {
         }
 
@@ -65,7 +65,7 @@ public class FakeLightingProvider extends LightingProvider
         }
 
         @Override
-        public int doLightUpdates(int i, boolean bl, boolean bl2)
+        public int doLightUpdates()
         {
             return 0;
         }

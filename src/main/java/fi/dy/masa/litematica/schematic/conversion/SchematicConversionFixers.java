@@ -31,7 +31,6 @@ import net.minecraft.block.WallBannerBlock;
 import net.minecraft.block.WallSkullBlock;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.block.enums.Instrument;
 import net.minecraft.block.enums.WireConnection;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.BooleanProperty;
@@ -316,7 +315,7 @@ public class SchematicConversionFixers
             state = state
                         .with(NoteBlock.POWERED, tag.getBoolean("powered"))
                         .with(NoteBlock.NOTE, MathHelper.clamp(tag.getByte("note"), 0, 24))
-                        .with(NoteBlock.INSTRUMENT, Instrument.fromBelowState(reader.getBlockState(pos.down())));
+                        .with(NoteBlock.INSTRUMENT, reader.getBlockState(pos.down()).getInstrument());
         }
 
         return state;

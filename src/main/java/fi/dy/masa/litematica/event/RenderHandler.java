@@ -1,5 +1,6 @@
 package fi.dy.masa.litematica.event;
 
+import net.minecraft.client.gui.DrawContext;
 import org.joml.Matrix4f;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
@@ -37,19 +38,19 @@ public class RenderHandler implements IRenderer
     }
 
     @Override
-    public void onRenderGameOverlayPost(MatrixStack matrixStack)
+    public void onRenderGameOverlayPost(DrawContext drawContext)
     {
         MinecraftClient mc = MinecraftClient.getInstance();
 
         if (Configs.Visuals.ENABLE_RENDERING.getBooleanValue() && mc.player != null)
         {
             // The Info HUD renderers can decide if they want to be rendered in GUIs
-            InfoHud.getInstance().renderHud(matrixStack);
+            InfoHud.getInstance().renderHud(drawContext);
 
             if (GuiUtils.getCurrentScreen() == null)
             {
-                ToolHud.getInstance().renderHud(matrixStack);
-                OverlayRenderer.getInstance().renderHoverInfo(mc, matrixStack);
+                ToolHud.getInstance().renderHud(drawContext);
+                OverlayRenderer.getInstance().renderHoverInfo(mc, drawContext);
 
                 if (GuiSchematicManager.hasPendingPreviewTask())
                 {

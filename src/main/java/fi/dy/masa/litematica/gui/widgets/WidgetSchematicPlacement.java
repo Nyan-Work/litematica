@@ -18,7 +18,7 @@ import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.gui.widgets.WidgetListEntryBase;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.StringUtils;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
@@ -70,7 +70,7 @@ public class WidgetSchematicPlacement extends WidgetListEntryBase<SchematicPlace
     }
 
     @Override
-    public void render(int mouseX, int mouseY, boolean selected, MatrixStack matrixStack)
+    public void render(int mouseX, int mouseY, boolean selected, DrawContext drawContext)
     {
         RenderUtils.color(1f, 1f, 1f, 1f);
 
@@ -98,7 +98,7 @@ public class WidgetSchematicPlacement extends WidgetListEntryBase<SchematicPlace
 
         String name = this.placement.getName();
         String pre = this.placement.isEnabled() ? GuiBase.TXT_GREEN : GuiBase.TXT_RED;
-        this.drawString(this.x + 20, this.y + 7, 0xFFFFFFFF, pre + name, matrixStack);
+        this.drawString(this.x + 20, this.y + 7, 0xFFFFFFFF, pre + name, drawContext);
 
         Icons icon;
 
@@ -128,23 +128,23 @@ public class WidgetSchematicPlacement extends WidgetListEntryBase<SchematicPlace
             icon.renderAt(this.buttonsStartX - 26, this.y + 6, this.zLevel, false, false);
         }
 
-        super.render(mouseX, mouseY, placementSelected, matrixStack);
+        super.render(mouseX, mouseY, placementSelected, drawContext);
     }
 
     @Override
-    public void postRenderHovered(int mouseX, int mouseY, boolean selected, MatrixStack matrixStack)
+    public void postRenderHovered(int mouseX, int mouseY, boolean selected, DrawContext drawContext)
     {
         if (this.placement.isLocked() &&
             GuiBase.isMouseOver(mouseX, mouseY, this.x + this.buttonsStartX - 38, this.y + 6, 11, 11))
         {
             String str = StringUtils.translate("litematica.hud.schematic_placement.hover_info.placement_locked");
-            RenderUtils.drawHoverText(mouseX, mouseY, ImmutableList.of(str), matrixStack);
+            RenderUtils.drawHoverText(mouseX, mouseY, ImmutableList.of(str), drawContext);
         }
         else if (this.placement.isRegionPlacementModified() &&
                  GuiBase.isMouseOver(mouseX, mouseY, this.x + this.buttonsStartX - 25, this.y + 6, 11, 11))
         {
             String str = StringUtils.translate("litematica.hud.schematic_placement.hover_info.placement_modified");
-            RenderUtils.drawHoverText(mouseX, mouseY, ImmutableList.of(str), matrixStack);
+            RenderUtils.drawHoverText(mouseX, mouseY, ImmutableList.of(str), drawContext);
         }
         else if (GuiBase.isMouseOver(mouseX, mouseY, this.x, this.y, this.buttonsStartX - 18, this.height))
         {
@@ -162,7 +162,7 @@ public class WidgetSchematicPlacement extends WidgetListEntryBase<SchematicPlace
             String strSize = String.format("%d x %d x %d", size.getX(), size.getY(), size.getZ());
             text.add(StringUtils.translate("litematica.gui.label.schematic_placement.enclosing_size", strSize));
 
-            RenderUtils.drawHoverText(mouseX, mouseY, text, matrixStack);
+            RenderUtils.drawHoverText(mouseX, mouseY, text, drawContext);
         }
     }
 
