@@ -4,6 +4,10 @@ Jitpack support
 ===================
 The branch artifacts support fetching from jitpack: https://jitpack.io/#Nyan-Work/litematica
 
+Malilib
+===================
+Get Malilib from Nyan-Work: https://github.com/Nyan-Work/malilib/releases/tag/snapshot-1.20.2
+
 Litematica
 ==============
 Litematica is a client-side Minecraft mod using LiteLoader.
