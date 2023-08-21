@@ -82,7 +82,9 @@ publishing {
 
 	repositories {
 		maven {
-			url "$projectDir/../../CommonMaven"
+			url "$projectDir/publish"
 		}
+
+		mavenLocal()
 	}
 }
